@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 export default function EditUser() {
-  let navigate = useNavigate();
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [user, setUser] = useState({
@@ -15,22 +14,26 @@ export default function EditUser() {
 
   const { name, username, email } = user;
 
+  // Base URL for backend (Render)
+  const API_URL = "https://fullstack-backend-93ow.onrender.com";
+
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
   useEffect(() => {
     loadUser();
+    // eslint-disable-next-line
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`http://localhost:8080/user/${id}`, user);
+    await axios.put(`${API_URL}/user/${id}`, user);
     navigate("/");
   };
 
   const loadUser = async () => {
-    const result = await axios.get(`http://localhost:8080/user/${id}`);
+    const result = await axios.get(`${API_URL}/user/${id}`);
     setUser(result.data);
   };
 
@@ -40,46 +43,49 @@ export default function EditUser() {
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
           <h2 className="text-center m-4">Edit User</h2>
 
-          <form onSubmit={(e) => onSubmit(e)}>
+          <form onSubmit={onSubmit}>
             <div className="mb-3">
               <label htmlFor="Name" className="form-label">
                 Name
               </label>
               <input
-                type={"text"}
+                type="text"
                 className="form-control"
                 placeholder="Enter your name"
                 name="name"
                 value={name}
-                onChange={(e) => onInputChange(e)}
+                onChange={onInputChange}
               />
             </div>
+
             <div className="mb-3">
               <label htmlFor="Username" className="form-label">
                 Username
               </label>
               <input
-                type={"text"}
+                type="text"
                 className="form-control"
                 placeholder="Enter your username"
                 name="username"
                 value={username}
-                onChange={(e) => onInputChange(e)}
+                onChange={onInputChange}
               />
             </div>
+
             <div className="mb-3">
               <label htmlFor="Email" className="form-label">
                 E-mail
               </label>
               <input
-                type={"text"}
+                type="text"
                 className="form-control"
                 placeholder="Enter your e-mail address"
                 name="email"
                 value={email}
-                onChange={(e) => onInputChange(e)}
+                onChange={onInputChange}
               />
             </div>
+
             <button type="submit" className="btn btn-outline-primary">
               Submit
             </button>

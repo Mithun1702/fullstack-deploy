@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
-
-  const { id } = useParams();
 
   useEffect(() => {
     loadUsers();
   }, []);
 
   const loadUsers = async () => {
-    const result = await axios.get("http://localhost:8080/users");
+const result = await axios.get("https://fullstack-backend-93ow.onrender.com/users");
     setUsers(result.data);
   };
 
   const deleteUser = async (id) => {
-    await axios.delete(`http://localhost:8080/user/${id}`);
+await axios.delete(`https://fullstack-backend-93ow.onrender.com/user/${id}`);
     loadUsers();
   };
 
@@ -36,24 +34,16 @@ export default function Home() {
           </thead>
           <tbody>
             {users.map((user, index) => (
-              <tr>
-                <th scope="row" key={index}>
-                  {index + 1}
-                </th>
+              <tr key={user.id}>
+                <th scope="row">{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.username}</td>
                 <td>{user.email}</td>
                 <td>
-                  <Link
-                    className="btn btn-primary mx-2"
-                    to={`/viewuser/${user.id}`}
-                  >
+                  <Link className="btn btn-primary mx-2" to={`/viewuser/${user.id}`}>
                     View
                   </Link>
-                  <Link
-                    className="btn btn-outline-primary mx-2"
-                    to={`/edituser/${user.id}`}
-                  >
+                  <Link className="btn btn-outline-primary mx-2" to={`/edituser/${user.id}`}>
                     Edit
                   </Link>
                   <button
